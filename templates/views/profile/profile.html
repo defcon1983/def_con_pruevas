@@ -1,0 +1,130 @@
+{% include "views/default/header.html" %}
+{% load i18n static %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <div class="card">
+                <output id="fotoPerfil">
+                    <img class="fotoPerfil" src="{{ profile.image.url  }}" />
+                </output>
+                <div class="card-body">
+                    <form action="{{ app_path }}/updateImage" method="post" enctype="multipart/form-data">
+                        <div class="col-md-10 text-center">
+                            {% csrf_token %}
+                            {{ imageForm.as_p}}
+                            <p class="errornote text-danger">
+                                {{ errorImage }}
+                            </p>
+                        </div>
+                        <div class="card">
+                            <div class="card-header ">
+                                <h5>{{ user.first_name }} &nbsp;{{ user.last_name}}</h5>
+                            </div>
+                            <div class="card-body">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {% if user.is_superuser %}
+                                                <p class="text-success">Admin.</p>
+                                                {% else %}
+                                                <p class="text-success">User.</p>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="caption text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-8">
+            <div class="panel  panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Configuracion de Usuario</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <div id="header" class="bg-info">
+                                    <h2 class="mb-0 t">
+                                        <button class="btn btn-link text-light " type="button" data-toggle="collapse"
+                                            data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Cambiar informacion
+                                        </button>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <form action="{{ app_path }}/updateUser" method="post" id="login-form">
+                                        {% csrf_token %}
+                                        {{ form1}}
+                                        {{ form2}}
+                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                            {{ dateForm}}
+                                            <div class="input-group-append" data-target="#datetimepicker1"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+
+                                        </div>
+                                        </br>
+                                        <div class="submit-row">
+                                            <input type="submit" value="Actualizar" class="btn btn-success">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card-header" id="headingOne">
+                                <div id="header" class="bg-info">
+                                    <h2 class="mb-0 t">
+                                        <button class="btn btn-link text-light " type="button" data-toggle="collapse"
+                                            data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                            Cambiar contraseña
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <form action="{{ app_path }}/updatePassword" method="post" id="login-form">
+                                            {% csrf_token %}
+                                            {{ password}}
+
+                                            </br>
+                                            <div class="submit-row">
+                                                <input type="submit" value="Actualizar" class="btn btn-success">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        $("#datetimepicker1").datetimepicker({
+            format: 'DD/MM/YYYY',
+        });
+        var imagePerfil = (evt) => {
+            new Uploadpicture().archivo(evt, "fotoPerfil");
+        }
+        document.getElementById('id_image').addEventListener('change', imagePerfil, false);
+    });
+
+</script>
+{% include "views/default/footer.html" %}

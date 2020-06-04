@@ -1,0 +1,82 @@
+{% include "views/default/header.html" %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="card" style="width: 21rem;">
+                <img src="/media/{{ curso.Imagen }}" class="thumbnail" />
+                <div class="card-body">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h4>{{ curso.Nombre }}</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {% if curso.Estado %}
+                                    <p class="text-success">Disponibles.</p>
+                                    {% else %}
+                                    <p class="text-danger">No disponibles.</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>${{ curso.Costo }}</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <form method="POST" action="{{ app_path }}/obtener">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ curso.CursoId }}" name="cursoid" size="1" />
+                                        <input type="submit" class="btn btn-success btn-sm" value="Obtener">
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-body">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    Descripcion
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>{{ curso.Descripcion }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    Categoria
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>{{ curso.CategoriaID.Nombre }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>${{ curso.Costo }}</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "views/default/footer.html" %}

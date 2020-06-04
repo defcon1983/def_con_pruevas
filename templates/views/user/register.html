@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="login">
+    <div id="container">
+        <div id="header" class="bg-info">
+            <h1>Registro de usuarios</h1>
+        </div>
+        <div id="content-main">
+            <form action="{{ app_path }}" method="post" id="login-form">
+                {% csrf_token %}
+                {{ form}}
+                <p class="errornote text-danger">
+                    {{ error }}
+                </p>
+                <div class="submit-row">
+                    <input type="submit" value="Registrar" class="btn btn-success">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

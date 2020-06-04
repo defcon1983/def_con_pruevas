@@ -1,0 +1,96 @@
+{% include "views/default/header.html" %}
+<div class="container">
+    <div class="form-group">
+        <form action="{{ app_path }}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" id="filtrar" name="filtrar" placeholder="Buscar" class="form-control" />
+                </div>
+                <div class="col-md-1">
+                    <div class="row">
+                        <input type="submit" value="Buscar" class="btn btn-success buscar">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        {% if cursos_list %}
+        {% for curso in cursos_list %}
+        <div class="col-xs-6 col-md-2">
+            <div class="card">
+                <div class="card-header ">
+                    <a href="details/{{ curso.CursoId }}">
+                        <img src="/media/{{ curso.Imagen }}" class="thumbnail" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h5>{{ curso.Nombre }}</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {% if curso.Estado %}
+                                    <p class="text-success">Disponibles.</p>
+                                    {% else %}
+                                    <p class="text-danger">No disponibles.</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>${{ curso.Costo }}</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <form method="POST" action="obtener">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ curso.CursoId }}" name="cursoid" size="1" />
+                                        <input type="submit" class="btn btn-success btn-sm" value="Obtener">
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+        <p>No hay cursos disponibles.</p>
+        {% endif %}
+    </div>
+    {% if cursos_list.has_next or cursos_list.has_previous %}
+    <ul class="pagination">
+        {% if cursos_list.has_previous %}
+        <li>
+            <a href="?page={{ cursos_list.previous_page_number }}" class="btn btnpages">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+            </a>
+        </li>
+        {% endif %}
+        {% for page in cursos_list.paginator.page_range %}
+        <li class="{% if cursos_list.number == page %}active{% endif %}">
+            <a class="btn btnpages" href="?page={{ page }}">{{ page }}</a>
+        </li>
+        {% endfor %}
+        {% if cursos_list.has_next %}
+        <li>
+            <a href="?page={{ cursos_list.next_page_number }}" class="btn btnpages">
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+</div>
+
+{% include "views/default/footer.html" %}
